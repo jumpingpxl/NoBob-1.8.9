@@ -3,15 +3,11 @@ package de.jumpingpxl.labymod.nobob;
 import de.jumpingpxl.labymod.nobob.listener.LoginServerListener;
 import de.jumpingpxl.labymod.nobob.listener.MessageSendListener;
 import de.jumpingpxl.labymod.nobob.listener.TickListener;
+import de.jumpingpxl.labymod.nobob.util.ChatComponent;
 import de.jumpingpxl.labymod.nobob.util.Settings;
 import net.labymod.api.LabyModAddon;
 import net.labymod.settings.elements.SettingsElement;
 import net.minecraft.client.Minecraft;
-import net.minecraft.event.ClickEvent;
-import net.minecraft.event.HoverEvent;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.IChatComponent;
 
 import java.util.List;
 
@@ -55,20 +51,28 @@ public class NoBob extends LabyModAddon {
 
 		Minecraft minecraft = Minecraft.getMinecraft();
 		if (!minecraft.gameSettings.viewBobbing) {
-			IChatComponent textComponent = new ChatComponentText(
-					"§7[§eNoBob§7] §4§lIMPORTANT: §cIn order for NoBob to work, the following setting has to"
-							+ " be enabled: ");
-			IChatComponent settingComponent = new ChatComponentText(
-					"§cOptions -> Video Settings -> View Bobbing §l[CLICK]");
+			ChatComponent chatComponent = ChatComponent.create("[")
+					.setColor(ChatComponent.Color.GRAY)
+					.append("NoBob")
+					.setColor(ChatComponent.Color.YELLOW)
+					.append("] ")
+					.setColor(ChatComponent.Color.GRAY)
+					.append("IMPORTANT: ")
+					.setColor(ChatComponent.Color.DARK_RED)
+					.setBold(true)
+					.append("In order for NoBob to work, the following setting has to be enabled: ")
+					.setColor(ChatComponent.Color.RED)
+					.append("Options -> Video Settings -> View Bobbing ")
+					.setColor(ChatComponent.Color.RED)
+					.setHoverText("§cClick to enable bobbing")
+					.setClickCommand("+nobob disablebobbing")
+					.append("[CLICK]")
+					.setColor(ChatComponent.Color.RED)
+					.setBold(true)
+					.setHoverText("§cClick to enable bobbing")
+					.setClickCommand("+nobob disablebobbing");
 
-			ChatStyle style = settingComponent.getChatStyle();
-			style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-					new ChatComponentText("§cClick to enable bobbing")));
-			style.setChatClickEvent(
-					new ClickEvent(ClickEvent.Action.RUN_COMMAND, "+nobob disablebobbing"));
-			settingComponent.setChatStyle(style);
-			textComponent.appendSibling(settingComponent);
-			minecraft.ingameGUI.getChatGUI().printChatMessage(textComponent);
+			minecraft.ingameGUI.getChatGUI().printChatMessage(chatComponent.build());
 		}
 	}
 }
